@@ -1,0 +1,44 @@
+﻿@model SearchViewModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<form asp-action="Search" class="text-white-50">
+    <h1 class="dark-text">Search engines</h1>
+    <div asp-validation-summary="ModelOnly" class="text-danger text-white-50"></div>
+        <label asp-for="Request.SearchString" class="control-label text-white-50">Search text: </label>
+        <input asp-for="Request.SearchString" class="form-control bg-dark text-white-50" style="border:none" />
+        <span asp-validation-for="Request.SearchString" class="text-danger text-white-50"></span>
+    <label asp-for="Request.SearchEngine" class="control-label text-white-50">Search engine:</label>
+    @Html.DropDownList("Request.SearchEngine",
+        new SelectList(Enum.GetValues(typeof(SearchEngine))),
+        new { style="border:none; position: relative; width:200px; height:40px", @class = "form-control bg-dark text-white-50 dark-border-input"})
+        <input type="submit" value="Search" class="btn btn-primary text-white-50" style="margin-top:1em; margin-bottom:2em;"/>
+</form>
+
+<table class="table table-dark text-white-50">
+    <tr>
+        <th>Result</th>
+        <th>Link</th>
+        <th>Search engine</th>
+    </tr>
+    @if (Model.SearchResults == null || Model.SearchResults.Count <= 0)
+    {
+        <tr>
+            <td colSpan="7" align="center"><b>No results</b></td>
+        </tr>
+    }
+    else
+    {
+        @foreach (var result in Model.SearchResults)
+        {
+            <tr>
+                <td><a href="@result.ResultUrl">@result.ResultName</a></td>
+                <td><a href="@result.ResultUrl">@result.ResultUrl</a></td>
+                <td>@result.SearchEngine</td>
+            </tr>
+        }
+    }
+</table>
+

@@ -1,0 +1,46 @@
+﻿@model SearchViewModel
+
+@{
+    ViewData["Title"] = "SearchInDb";
+}
+
+<form asp-action="SearchInDb" class="text-white-50">
+    <h1 class="dark-text">Search in database</h1>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Request.SearchString" class="control-label text-white-50">Search text:</label>
+        <input asp-for="Request.SearchString" class="form-control bg-dark text-white-50" style="border:none" />
+        <span asp-validation-for="Request.SearchString" class="text-danger text-white-50"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Search" class="btn btn-primary text-white-50" style="margin-top:1em; margin-bottom:2em;"/>
+    </div>
+</form>
+<div class="text-md-center">
+    <table class="table table-dark text-white-50" width="100%">
+        <tr>
+            <th>Result</th>
+            <th>Link</th>
+            <th>Search engine</th>
+        </tr>
+        @if (Model.SearchResults == null || Model.SearchResults.Count <= 0)
+        {
+            <tr>
+                <td colSpan="7" align="center"><b>No results</b></td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var result in Model.SearchResults)
+            {
+                <tr>
+                    <td><a href="@result.ResultUrl">@result.ResultName</a></td>
+                    <td><a href="@result.ResultUrl">@result.ResultUrl</a></td>
+                    <td>@result.SearchEngine</td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
